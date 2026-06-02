@@ -59,7 +59,7 @@ This is a direction, not a finished feature, and not a clinical claim. We don't 
 No. The microphone stream is processed on-device and the raw audio does not leave the phone. The pipeline works on the energy envelope and spectral shape of breathing, not on words, so it isn't built to recognise or transcribe speech. What's kept for improving the model is quality-checked (waveform, phase-label) material held on-device until you explicitly confirm it, not a continuous recording.
 
 **Do I need an account to try it?**
-Not for the core breathing biofeedback; that works without creating one. Some surrounding features in the app use an account; the part this repo is about does not.
+Yes, in the current published app. The shipped build requires an account to reach the breathing detection screen, with a 14-day free trial covering all features. The detection logic itself does not depend on an account, and a guest / local-only mode is on the list, but at the moment you cannot try the app without signing up. An earlier version of this README said otherwise; that was wrong and has been corrected.
 
 **Is this a medical device? Can it diagnose or treat anything?**
 No. It's a wellness and self-awareness tool. It isn't a medical device, it doesn't diagnose or treat anything, and it isn't validated for clinical use. If you feel dizzy or uncomfortable during a session, stop and breathe normally. Slow or paced breathing makes some people lightheaded, and there's nothing to push through.
