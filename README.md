@@ -53,6 +53,32 @@ This is a direction, not a finished feature, and not a clinical claim. We don't 
 - [`docs/research-pitch.md`](docs/research-pitch.md) — the validation study and why it's structured the way it is.
 - [`docs/privacy-and-design-constraints.md`](docs/privacy-and-design-constraints.md) — what we will and won't do with the microphone.
 
+## Questions I expect
+
+**Does my audio get uploaded, or analysed for speech?**
+No. The microphone stream is processed on-device and the raw audio does not leave the phone. The pipeline works on the energy envelope and spectral shape of breathing, not on words — it isn't built to recognise or transcribe speech. What's kept for improving the model is quality-checked (waveform, phase-label) material held on-device until you explicitly confirm it, not a continuous recording.
+
+**Do I need an account to try it?**
+Not for the core breathing biofeedback — that works without creating one. Some surrounding features in the app use an account; the part this repo is about does not.
+
+**Is this a medical device? Can it diagnose or treat anything?**
+No. It's a wellness and self-awareness tool. It isn't a medical device, it doesn't diagnose or treat anything, and it isn't validated for clinical use. If you feel dizzy or uncomfortable during a session, stop and breathe normally — slow or paced breathing makes some people lightheaded, and there's nothing to push through.
+
+**Does it make me do extreme or forced breathing?**
+No. It supports several guided patterns, including classical designs with holds such as 4-7-8, but the point is to reflect your own breathing back to you, not to force fast or extreme breathing. You set the pace, and stopping when it feels off is always the right call.
+
+**Why an app on the phone instead of a terminal/CLI?**
+The phone microphone is the sensor. The app exists because it needs microphone access and has to render the feedback in close to real time as you breathe — that loop is the whole experience, and it doesn't map onto a text terminal.
+
+**Do I need a chest strap or HRV sensor?**
+No. The microphone alone drives the live biofeedback. A respiration belt or heart-rate strap is optional — used for the validation study and as an extra signal for resonance-range estimation, never a prerequisite. By default the guided patterns use fixed presets; the personal resonance range is a direction under validation, not a shipped, calibrated feature.
+
+**Is the app open source?**
+This repository documents the method and the research pitch, not the full app source. The docs here are released under CC BY 4.0.
+
+**What feedback is useful?**
+Specifics on the signal processing and failure modes, on health/wellness UX, and on mobile audio — Android/iOS capture quirks, automatic gain control, microphone differences across devices. Those are the parts where outside eyes help most.
+
 ## Try it
 
 shii·haa is the app this came out of. If you want to feel the biofeedback rather than read about it:
