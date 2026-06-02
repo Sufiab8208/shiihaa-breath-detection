@@ -83,7 +83,7 @@ Specifics on the signal processing and failure modes, on health/wellness UX, and
 
 shii·haa is the app this came out of. If you want to feel the biofeedback rather than read about it:
 
-- Website: [shiihaa.app](https://shiihaa.app)
+If you want to try the app: [shiihaa.app/download](https://shiihaa.app/download)
 
 Built by Felix Zeller (felix@shiihaa.app).
 
