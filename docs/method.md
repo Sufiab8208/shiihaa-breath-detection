@@ -78,3 +78,4 @@ Two cautions belong here explicitly. First, all of this is **under validation** 
 - Silence is inherently ambiguous: distinguishing a hold from a between-breath pause from quiet shallow breathing is the hardest case, and the protocol-level ideas above exist specifically to attack it.
 - Heavy background noise, very shallow breathing, and aggressive device-side audio processing all degrade detection.
 - This is a wellness and self-awareness tool. It is not a medical device and is not validated for any clinical use.
+
