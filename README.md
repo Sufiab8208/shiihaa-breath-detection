@@ -39,6 +39,14 @@ This is a working approach that runs in a shipped app, not a finished science re
 
 It is a wellness and self-awareness tool, not a medical device.
 
+## Where this connects to guided breathing
+
+Breath detection isn't the end in itself — it's the feedback channel. During a session, the detected phase and how steady your breathing is can be reflected back to you in the moment, and that same signal can inform classical breathing designs: a preset can hint at when your pace has settled or drifted, instead of just counting seconds at you.
+
+The longer-term loop we're working toward is a personal resonance range — roughly, the slow breathing pace at which your own physiology settles most, often somewhere near six breaths a minute but individual. Detected breath stability, optionally combined with heart rate or HRV when a sensor is available, gives the raw material to estimate that range over time and feed it back into the guided patterns, so the pacing adapts to you rather than to a fixed number.
+
+This is a direction, not a finished feature, and not a clinical claim. We don't diagnose anything, and we don't promise an optimised state — only that the same detection layer can make guided breathing a little less generic.
+
 ## Docs
 
 - [`docs/method.md`](docs/method.md) — how the detection pipeline is put together.

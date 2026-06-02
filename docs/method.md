@@ -55,6 +55,23 @@ Beyond that, the validation study is evaluating additional protocol-level ideas,
 
 These are described in the research pitch as part of the method under validation. We are not claiming validated accuracy numbers here; the study exists precisely to produce them.
 
+## Resonance-range estimation and adaptive guided patterns
+
+A further direction, also under validation rather than shipped, is to use the detection stack as the input to guided breathing rather than only as a live display.
+
+The breath-phase output already yields per-cycle timing: inhale and exhale durations, hold/pause lengths, and cycle-to-cycle variability. The quality layer matters here, because a resonance estimate should only be built from cycles that passed the quality checks — a fabricated transition would poison the timing statistics it feeds.
+
+From quality-checked cycles, a few things become estimable:
+
+- **Achieved pace** — the breathing rate the user actually sustains during a slow-breathing preset, and how stable it is, rather than the rate the preset nominally targets.
+- **Per-pace stability** — how clean and regular the cycles are at different target rates, which is the breath-side proxy for "this pace sits well."
+
+Where a heart-rate or HRV signal is available (an optional external sensor, never required), it can be aligned with the breath timing to look for the pace at which the cardiovascular and respiratory rhythms couple most strongly — the conventional definition of a personal resonance frequency. With breath alone, the stability proxy above is a weaker but sensor-free stand-in.
+
+The adaptive part of the loop is then straightforward in principle: nudge a guided pattern's pacing toward the range where stability (and, if present, HR/HRV coupling) is best, within the bounds of the chosen technique.
+
+Two cautions belong here explicitly. First, all of this is **under validation** — the per-cycle timing comes from the same detector whose accuracy the study is measuring, so resonance estimates inherit that uncertainty and are not yet calibrated. Second, this estimates a comfortable, stable breathing range for self-awareness; it is not a clinical measurement and is not a guarantee of any physiological outcome.
+
 ## Limitations
 
 - Microphone-only breath detection in uncontrolled conditions is hard, and smartphone-only systems in the literature sit well below wearable-based ones.
