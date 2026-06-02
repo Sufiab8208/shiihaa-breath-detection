@@ -1,0 +1,58 @@
+# shii·haa breath detection
+
+Live breath detection and biofeedback using a phone microphone.
+
+Can an app use breathing feedback to increase self-awareness instead of becoming another distraction?
+
+That question is the reason this project exists. Most "mindfulness" software ends up competing for attention rather than handing it back. We wanted to know whether the phone could do the opposite: stay quiet, listen to how you breathe, and reflect it back closely enough that you notice your own pattern — without a wearable, without a coach, without turning it into a game.
+
+The hard part is the listening. A phone microphone in a real room is a messy signal: room tone, traffic, a fan, the phone resting on fabric, the person shifting position. Out of that, we try to recover where one breath ends and the next begins, and which phase you are in right now.
+
+## What it does
+
+- Reads audio from the **phone microphone** and processes it **on-device**.
+- Estimates the current breathing phase — inhale, exhale, and the transitions and holds between them — and tracks completed breath cycles.
+- Drives **biofeedback**: the interface responds to the breath in close to real time, so the signal you see or feel is your own.
+
+## What it does not do
+
+- **No speech analysis.** The pipeline works on the envelope and spectral shape of breathing, not on words. It is not built to recognise or transcribe anything you say.
+- **No raw audio upload.** Audio is analysed locally. The raw microphone stream does not leave the device.
+
+## How it works, roughly
+
+Three layers sit on top of the raw microphone signal:
+
+1. **Signal processing.** The audio stream is cut into short overlapping windows. For each window we derive an amplitude/energy measure and basic spectral features (where the energy sits in frequency, where the peaks are). Inhale tends to be more turbulent and higher in the spectrum; exhale tends to be lower and smoother. None of this is reliable on a single window — it only becomes useful across a sequence.
+
+2. **A breathing state machine.** Phase isn't decided per window in isolation. A small state machine tracks the current phase and the plausible transitions out of it (inhale → exhale, exhale → hold, and so on), using adaptive thresholds that recalibrate as ambient conditions drift. This is what lets the system distinguish a genuine phase change from a momentary dip or spike.
+
+3. **A data-quality layer.** Before a window is allowed to influence the output, it has to pass quality checks. Windows that are too noisy, too quiet, or acoustically ambiguous are rejected rather than guessed. The point is to fail honestly — a brief "not sure" is better than a confident wrong phase that the user can feel is wrong.
+
+Machine learning is part of the picture, but in a deliberately bounded way: it is used to sharpen feedback and to improve the model over time from quality-checked examples, not as a black box that the whole detection depends on. The rule-based pipeline is what runs the live experience; ML refines it.
+
+A lot of the work is in the unglamorous part — handling **real-world mobile audio quirks**. Different phones, different microphone placements, the device flat on a table versus held in a hand, sudden transient sounds, automatic gain control fighting you. Most of the engineering effort went here rather than into the "interesting" signal-processing core.
+
+## Status and honesty about limits
+
+This is a working approach that runs in a shipped app, not a finished science result. Microphone-only breath detection in uncontrolled conditions is genuinely hard, and published smartphone-only systems sit well below wearable-based ones. We are running a validation study against clinical ground truth to find out how good this actually is, and where it breaks. The method note and the research pitch in [`docs/`](docs/) describe that in more detail, including the things we explicitly do not claim.
+
+It is a wellness and self-awareness tool, not a medical device.
+
+## Docs
+
+- [`docs/method.md`](docs/method.md) — how the detection pipeline is put together.
+- [`docs/research-pitch.md`](docs/research-pitch.md) — the validation study and why it's structured the way it is.
+- [`docs/privacy-and-design-constraints.md`](docs/privacy-and-design-constraints.md) — what we will and won't do with the microphone.
+
+## Try it
+
+shii·haa is the app this came out of. If you want to feel the biofeedback rather than read about it:
+
+- Website: [shiihaa.app](https://shiihaa.app)
+
+Built by Felix Zeller — felix@shiihaa.app.
+
+## License
+
+Documentation in this repository is released under CC BY 4.0. See [`LICENSE`](LICENSE).
