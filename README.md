@@ -49,9 +49,9 @@ This is a direction, not a finished feature, and not a clinical claim. We don't 
 
 ## Docs
 
-- [`docs/method.md`](docs/method.md) — how the detection pipeline is put together.
-- [`docs/research-pitch.md`](docs/research-pitch.md) — the validation study and why it's structured the way it is.
-- [`docs/privacy-and-design-constraints.md`](docs/privacy-and-design-constraints.md) — what we will and won't do with the microphone.
+- [`docs/method.md`](docs/method.md): how the detection pipeline is put together.
+- [`docs/research-pitch.md`](docs/research-pitch.md): the validation study and why it's structured the way it is.
+- [`docs/privacy-and-design-constraints.md`](docs/privacy-and-design-constraints.md): what we will and won't do with the microphone.
 
 ## Questions I expect
 
@@ -59,7 +59,7 @@ This is a direction, not a finished feature, and not a clinical claim. We don't 
 No. The microphone stream is processed on-device and the raw audio does not leave the phone. The pipeline works on the energy envelope and spectral shape of breathing, not on words, so it isn't built to recognise or transcribe speech. What's kept for improving the model is quality-checked (waveform, phase-label) material held on-device until you explicitly confirm it, not a continuous recording.
 
 **Do I need an account to try it?**
-Yes, in the current published app. The shipped build requires an account to reach the breathing detection screen, with a 14-day free trial covering all features. The detection logic itself does not depend on an account, and a guest / local-only mode is on the list, but at the moment you cannot try the app without signing up. An earlier version of this README said otherwise; that was wrong and has been corrected.
+You can try the browser biofeedback demo without creating an account; it runs the live breath detection in the browser so you can feel the feedback first. The native app still uses an account for personal features such as saved sessions and the 14-day trial covering everything else. So: the browser demo is account-free to try, while the full app keeps an account for the personal side.
 
 **Is this a medical device? Can it diagnose or treat anything?**
 No. It's a wellness and self-awareness tool. It isn't a medical device, it doesn't diagnose or treat anything, and it isn't validated for clinical use. If you feel dizzy or uncomfortable during a session, stop and breathe normally. Slow or paced breathing makes some people lightheaded, and there's nothing to push through.
@@ -81,9 +81,9 @@ Specifics on the signal processing and failure modes, on health/wellness UX, and
 
 ## Try it
 
-shii·haa is the app this came out of. If you want to feel the biofeedback rather than read about it:
+shii·haa is the app this came out of. If you want to feel the biofeedback rather than read about it, the browser demo lets you try the live breath detection without an account.
 
-If you want to try the app: [shiihaa.app/download](https://shiihaa.app/download)
+Start here: [shiihaa.app/download](https://shiihaa.app/download)
 
 Built by Felix Zeller (felix@shiihaa.app).
 

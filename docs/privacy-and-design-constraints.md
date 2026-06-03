@@ -6,13 +6,13 @@ These are constraints we hold ourselves to, not marketing. They shape what the s
 
 - **No raw audio upload.** Microphone audio is analysed on-device. The raw audio stream does not leave the phone.
 - **No speech analysis.** The pipeline operates on the energy envelope and spectral shape of breathing. It is not built to recognise, transcribe, or interpret speech.
-- **On-device processing.** Breath detection runs locally. What's collected for model improvement is quality-checked (waveform, phase-label) material kept on-device until a user explicitly confirms it — not a continuous recording.
-- **No account required for basic use.** The core breathing biofeedback works without creating an account.
+- **On-device processing.** Breath detection runs locally. What's collected for model improvement is quality-checked (waveform, phase-label) material kept on-device until a user explicitly confirms it, not a continuous recording.
+- **Browser demo without an account.** The browser biofeedback demo runs the live breath detection without creating an account. The native app still uses an account for personal features.
 
 ## Hardware
 
 - **No wearable required for basic biofeedback.** The microphone alone drives the live experience.
-- **Optional chest strap.** A respiration belt or heart-rate strap can be added — it's used for validation and as an optional extra signal, never a prerequisite.
+- **Optional chest strap.** A respiration belt or heart-rate strap can be added; it's used for validation and as an optional extra signal, never a prerequisite.
 
 ## Design
 

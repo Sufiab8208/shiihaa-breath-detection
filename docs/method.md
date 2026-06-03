@@ -7,13 +7,13 @@ How shii·haa detects breathing from a phone microphone. This is a description o
 The input is the raw microphone stream from a phone. We slice it into short, overlapping analysis windows. For each window we compute:
 
 - an **amplitude / energy** measure (how loud the window is, after accounting for the running noise floor), and
-- a few **spectral features** — notably where the spectral energy is concentrated and where its peaks are.
+- a few **spectral features**, notably where the spectral energy is concentrated and where its peaks are.
 
 The physical intuition: inhalation through the nose or mouth is more turbulent and tends to push energy higher in the spectrum; exhalation is smoother and lower. This is a tendency, not a rule, and on any single window the features overlap heavily with noise. The signal only becomes interpretable across a sequence of windows.
 
 ## Phases, not just loudness
 
-We care about more than "is there breath sound now." The target phases are **inhale**, **exhale**, and the **transitions** between them — including the quiet stretches that a loudness-only system would lump together. A hold and a pause can be acoustically near-identical (both are roughly silent), which is one of the central difficulties: simple energy detection cannot tell a deliberate breath-hold from the gap between breaths.
+We care about more than "is there breath sound now." The target phases are **inhale**, **exhale**, and the **transitions** between them, including the quiet stretches that a loudness-only system would lump together. A hold and a pause can be acoustically near-identical (both are roughly silent), which is one of the central difficulties: simple energy detection cannot tell a deliberate breath-hold from the gap between breaths.
 
 ## The breathing state machine
 
@@ -23,30 +23,30 @@ This is what gives the system temporal coherence. A momentary spike inside an ex
 
 ## Spectral classification
 
-Where amplitude alone is ambiguous, the **spectral features** are used to discriminate phase — combining more than one signal (for example a peak-frequency cue together with the spectral centroid) rather than relying on a single number. Using two cooperating spectral measures is more robust to the broadband noise that a single feature gets fooled by.
+Where amplitude alone is ambiguous, the **spectral features** are used to discriminate phase, combining more than one signal (for example a peak-frequency cue together with the spectral centroid) rather than relying on a single number. Using two cooperating spectral measures is more robust to the broadband noise that a single feature gets fooled by.
 
 ## The quality layer
 
-Not every window is allowed to influence the output. A **data-quality layer** sits in front of the decision and rejects windows that are too noisy, too quiet, or acoustically ambiguous. The design preference is explicit: it is better to emit "uncertain" briefly than to emit a confident, wrong phase. In practice this means the system will occasionally go quiet rather than fabricate a transition — which, for biofeedback, is the right failure mode, because a wrong phase is something the user can immediately feel.
+Not every window is allowed to influence the output. A **data-quality layer** sits in front of the decision and rejects windows that are too noisy, too quiet, or acoustically ambiguous. The design preference is explicit: it is better to emit "uncertain" briefly than to emit a confident, wrong phase. In practice this means the system will occasionally go quiet rather than fabricate a transition, which for biofeedback is the right failure mode, because a wrong phase is something the user can immediately feel.
 
-Part of this layer is **transient-artifact rejection** — a set of checks that catch short, sharp events (a tap, a door, a consonant burst) that look like breath onsets to an energy detector but don't have the temporal shape of one.
+Part of this layer is **transient-artifact rejection**: a set of checks that catch short, sharp events (a tap, a door, a consonant burst) that look like breath onsets to an energy detector but don't have the temporal shape of one.
 
 ## Machine learning, scoped
 
-ML is used to **sharpen feedback and improve the model over time** from windows that have passed the quality layer and been confirmed. It is not the thing the live detection hangs on: the rule-based pipeline above is what runs the experience. Keeping ML downstream of a validated, quality-checked label source is a deliberate choice — see the research pitch for why label quality is treated as a precondition rather than an afterthought.
+ML is used to **sharpen feedback and improve the model over time** from windows that have passed the quality layer and been confirmed. It is not the thing the live detection hangs on: the rule-based pipeline above is what runs the experience. Keeping ML downstream of a validated, quality-checked label source is a deliberate choice; see the research pitch for why label quality is treated as a precondition rather than an afterthought.
 
 ## Platform quirks
 
 A large share of the engineering is in handling real mobile audio:
 
-- **Device and placement variation** — phone in hand vs. flat on a table vs. on fabric changes the spectrum substantially.
+- **Device and placement variation:** phone in hand vs. flat on a table vs. on fabric changes the spectrum substantially.
 - **Automatic gain control** on the OS audio path can compress exactly the dynamics we rely on.
 - **Microphone hardware differences** across phone models shift the spectral baseline.
-- **Ambient drift** — fans, traffic, HVAC — requires the noise floor to be re-estimated continuously rather than calibrated once.
+- **Ambient drift** (fans, traffic, HVAC) requires the noise floor to be re-estimated continuously rather than calibrated once.
 
 ## What is current vs. under validation
 
-The pieces above — windowed signal processing, the adaptive amplitude-based state machine, multi-signal spectral classification, the quality layer with transient-artifact rejection, and bounded downstream ML — describe the live approach.
+The pieces above (windowed signal processing, the adaptive amplitude-based state machine, multi-signal spectral classification, the quality layer with transient-artifact rejection, and bounded downstream ML) describe the live approach.
 
 Beyond that, the validation study is evaluating additional protocol-level ideas, including:
 
@@ -59,18 +59,18 @@ These are described in the research pitch as part of the method under validation
 
 A further direction, also under validation rather than shipped, is to use the detection stack as the input to guided breathing rather than only as a live display.
 
-The breath-phase output already yields per-cycle timing: inhale and exhale durations, hold/pause lengths, and cycle-to-cycle variability. The quality layer matters here, because a resonance estimate should only be built from cycles that passed the quality checks — a fabricated transition would poison the timing statistics it feeds.
+The breath-phase output already yields per-cycle timing: inhale and exhale durations, hold/pause lengths, and cycle-to-cycle variability. The quality layer matters here, because a resonance estimate should only be built from cycles that passed the quality checks, since a fabricated transition would poison the timing statistics it feeds.
 
 From quality-checked cycles, a few things become estimable:
 
-- **Achieved pace** — the breathing rate the user actually sustains during a slow-breathing preset, and how stable it is, rather than the rate the preset nominally targets.
-- **Per-pace stability** — how clean and regular the cycles are at different target rates, which is the breath-side proxy for "this pace sits well."
+- **Achieved pace:** the breathing rate the user actually sustains during a slow-breathing preset, and how stable it is, rather than the rate the preset nominally targets.
+- **Per-pace stability:** how clean and regular the cycles are at different target rates, which is the breath-side proxy for "this pace sits well."
 
-Where a heart-rate or HRV signal is available (an optional external sensor, never required), it can be aligned with the breath timing to look for the pace at which the cardiovascular and respiratory rhythms couple most strongly — the conventional definition of a personal resonance frequency. With breath alone, the stability proxy above is a weaker but sensor-free stand-in.
+Where a heart-rate or HRV signal is available (an optional external sensor, never required), it can be aligned with the breath timing to look for the pace at which the cardiovascular and respiratory rhythms couple most strongly, the conventional definition of a personal resonance frequency. With breath alone, the stability proxy above is a weaker but sensor-free stand-in.
 
 The adaptive part of the loop is then straightforward in principle: nudge a guided pattern's pacing toward the range where stability (and, if present, HR/HRV coupling) is best, within the bounds of the chosen technique.
 
-Two cautions belong here explicitly. First, all of this is **under validation** — the per-cycle timing comes from the same detector whose accuracy the study is measuring, so resonance estimates inherit that uncertainty and are not yet calibrated. Second, this estimates a comfortable, stable breathing range for self-awareness; it is not a clinical measurement and is not a guarantee of any physiological outcome.
+Two cautions belong here explicitly. First, all of this is **under validation**: the per-cycle timing comes from the same detector whose accuracy the study is measuring, so resonance estimates inherit that uncertainty and are not yet calibrated. Second, this estimates a comfortable, stable breathing range for self-awareness; it is not a clinical measurement and is not a guarantee of any physiological outcome.
 
 ## Limitations
 
